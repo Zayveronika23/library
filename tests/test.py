@@ -2,7 +2,8 @@ import json
 import os
 import unittest
 
-from library import Book, Library
+from app.models.book import Book
+from app.models.library import Library
 
 
 class TestBook(unittest.TestCase):
@@ -10,7 +11,8 @@ class TestBook(unittest.TestCase):
 
     def test_create_book(self):
         """Сhecks the creation of an object of the book class"""
-        book = Book(0, 'title', 'author', 1900)
+        book = Book('title', 'author', 1900)
+        book.add_book_id(0)
         self.assertEqual(book.status, 'В наличии')
 
 
@@ -20,14 +22,14 @@ class TestLibrary(unittest.TestCase):
     def setUp(self):
         test_data = [
             {
-                "id": 0,
+                "book_id": 0,
                 "title": "first_title",
                 "author": "first_author",
                 "year": 1900,
                 "status": "В наличии"
             },
             {
-                "id": 1,
+                "book_id": 1,
                 "title": "second_title",
                 "author": "second_author",
                 "year": 1901,
@@ -47,15 +49,16 @@ class TestLibrary(unittest.TestCase):
 
     def test_add_new_book(self):
         """Checks the function to add new book."""
-        new_book = Book(2, 'third_title', 'third_author', 1902)
+        new_book = Book('third_title', 'third_author', 1902)
+        new_book.add_book_id(0)
         new_book = new_book.get_json()
         self.library.add_book(new_book)
         new_amount_book = len(self.library.books)
         self.assertEqual(new_amount_book, 3)
 
-    def test_get_id(self):
+    def test_get_book_id(self):
         """Checks the function to get last ID."""
-        new_id = self.library.get_id()
+        new_id = self.library.get_book_id()
         self.assertEqual(new_id, 2)
 
     def test_delete_book(self):
@@ -73,17 +76,19 @@ class TestLibrary(unittest.TestCase):
     def test_find_by_title(self):
         """Checks the function to find book by title."""
         book = self.library.find_title('first_title')
-        book_id = book[0]['id']
+        book_id = book[0]['book_id']
         self.assertEqual(book_id, 0)
 
     def test_find_by_author(self):
         """Checks the function to find book by author."""
         book = self.library.find_author('first_author')
-        book_id = book[0]['id']
+        book_id = book[0]['book_id']
         self.assertEqual(book_id, 0)
 
     def test_find_by_year(self):
         """Checks the function to find book by year."""
         book = self.library.find_year(1900)
-        book_id = book[0]['id']
+        book_id = book[0]['book_id']
         self.assertEqual(book_id, 0)
+
+
