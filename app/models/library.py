@@ -1,17 +1,22 @@
 import json
+from dataclasses import dataclass
 from typing import Optional
 
 from app.models.book import Book
 
 
+@dataclass
 class Library:
     """Library object representation class."""
 
-    def __init__(self, file_name: str = 'data.json') -> None:
-        self.file_name = file_name
-        self.books = self.load_json(file_name)
+    file_name: str = 'data.json'
+    books: list = None
 
-    def create_json_file(filename='data.json') -> None:
+    def get_books(self) -> list:
+        self.books = self.load_json(self.file_name)
+        return self.books
+
+    def create_json_file(filename: str = 'data.json') -> None:
         with open(filename, 'w', encoding='utf-8') as file:
             json.dump([], file, ensure_ascii=False, indent=4)
 
@@ -48,24 +53,30 @@ class Library:
 
     def delete_book(self, book_id: int) -> None:
         """Remove a book from the book list by ID."""
-        for book in self.books:
-            if book['book_id'] == book_id:
-                self.books.remove(book)
-                print('Книга удалена')
-                self.write_to_file(self.file_name)
-                break
-        else:
+        try:
+            for book in self.books:
+                if book['book_id'] == book_id:
+                    self.books.remove(book)
+                    print('Книга удалена')
+                    self.write_to_file(self.file_name)
+                    break
+            else:
+                raise ValueError()
+        except ValueError:
             print('Книги с таким ID не существует')
 
     def update_status(self, book_id: int, status: str) -> None:
         """Change the status of a book."""
-        for book in self.books:
-            if book['book_id'] == book_id:
-                book['status'] = status
-                print(f'Статус книги изменен на "{status}".')
-                self.write_to_file(self.file_name)
-                break
-        else:
+        try:
+            for book in self.books:
+                if book['book_id'] == book_id:
+                    book['status'] = status
+                    print(f'Статус книги изменен на "{status}".')
+                    self.write_to_file(self.file_name)
+                    break
+            else:
+                raise ValueError()
+        except ValueError:
             print('Книги с таким ID не существует')
 
     def find_title(self, title: str) -> Optional[list]:

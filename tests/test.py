@@ -38,6 +38,7 @@ class TestLibrary(unittest.TestCase):
         with open('test_data.json', 'w', encoding='utf-8') as file:
             json.dump(test_data, file, ensure_ascii=False, indent=4)
         self.library = Library('test_data.json')
+        self.library.get_books()
 
     def tearDown(self):
         os.remove('test_data.json')

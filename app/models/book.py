@@ -1,13 +1,14 @@
+from dataclasses import dataclass
 
+
+@dataclass
 class Book:
     """Book object representation class."""
 
-    def __init__(self, title: str, author: str,
-                 year: int, status: str = 'В наличии') -> None:
-        self.title = title
-        self.author = author
-        self.year = year
-        self.status = status
+    title: str
+    author: str
+    year: int
+    status: str = 'В наличии'
 
     def add_book_id(self, book_id: int) -> None:
         """Add ID to book object"""

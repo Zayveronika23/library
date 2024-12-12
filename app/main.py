@@ -5,14 +5,15 @@ from app.handlers import (choose_action, handle_add_new_book,
                           handle_get_books, handle_update_book)
 from app.models.library import Library
 
-library = Library()
 
-
-def main(FILE_NAME='data.json') -> None:
+def main(FILE_NAME: str = 'data.json') -> None:
     """Start function for selecting, entering values and calling methods."""
+
     try:
         if not os.path.exists(FILE_NAME):
             Library.create_json_file()
+        library = Library()
+        library.get_books()
         while True:
             action = choose_action()
             match action:
@@ -30,7 +31,6 @@ def main(FILE_NAME='data.json') -> None:
                     exit()
                 case _:
                     print('Такого действия не существует')
-            break
     except KeyboardInterrupt:
         print('\nДо скорых встреч!')
 
