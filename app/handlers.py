@@ -11,19 +11,23 @@ class InputPort(abc.ABC):
     def get_year_from_user(
             self, prompt: str = 'Введите год издания книги: ') -> int:
         pass
-
+    
+    @abc.abstractmethod
     def get_book_id_from_user(
             self, prompt: str = 'Введите номер книги: ') -> int:
         pass
-
+    
+    @abc.abstractmethod
     def get_title_from_user(
             self, prompt: str = 'Введите название книги: ') -> str:
         pass
 
+    @abc.abstractmethod
     def get_author_from_user(
             self, prompt: str = 'Введите автора  книги: ') -> str:
         pass
 
+    @abc.abstractmethod
     def get_action_from_user(self, prompt: str = '') -> str:
         pass
 
